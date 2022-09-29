@@ -9,7 +9,7 @@ find_package(glfw3 REQUIRED)
 set(EXECUTABLE_OUTPUT_PATH ../.)
 set(SRC_LIST main.cpp glad.c ./shader/Shader.h ./shader/Shader.cpp)
 
-add_executable(demo ${SRC_LIST})
+add_executable(circle ${SRC_LIST})
 
 target_include_directories(demo PUBLIC ${PROJECT_SOURCE_DIR}/include ${OPENGL_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/cmake)
 
