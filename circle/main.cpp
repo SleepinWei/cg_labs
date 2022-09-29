@@ -59,8 +59,6 @@ public:
             glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
             glEnableVertexAttribArray(0);
             dirty = false;
-            for(int i= 0;i<vertices.size();i++)
-                std::cout << vertices[i] <<'\n';
         }
         glBindVertexArray(VAO);
         glDrawArrays(GL_POINTS,0,vertices.size()/2);

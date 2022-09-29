@@ -7,8 +7,9 @@ find_package(OpenGL REQUIRED)
 set(EXECUTABLE_OUTPUT_PATH ../.)
 set(SRC_LIST main.cpp glad.c ./shader/Shader.h ./shader/Shader.cpp)
 
-add_executable(demo ${SRC_LIST})
+add_executable(circle ${SRC_LIST})
 
-target_include_directories(demo PUBLIC include)
-target_link_libraries(demo /usr/local/lib/libglfw3.a ${OPENGL_LIBRARIES} 
+target_include_directories(circle PUBLIC include)
+include_directories("./lib")
+target_link_libraries(circle libglfw3.a ${OPENGL_LIBRARIES} 
 	-ldl -lm -lXinerama -lXrandr -lXi -lXcursor -lX11 -lpthread)
