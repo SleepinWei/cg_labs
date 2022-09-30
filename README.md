@@ -1,3 +1,5 @@
-This is the lab publishing repo of the ComputerGraphics
-	already released:
-	--lab1
+# This is the lab publishing repo of the ComputerGraphics
+
+## Already Released:
+
+### --lab1
