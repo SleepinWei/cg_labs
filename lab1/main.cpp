@@ -71,70 +71,34 @@ public:
     }
 };
 
-void createCircle(Screen & screen, Point c, float r, float pointSize = 5){
-    /*
-    * c: center, r: radius
-    * draw a pixel at position p: screen.putPixel(Point p) 
-    * notice: p refers to the position relative to the bottom-left in pixels
-    */
-    //TODO 
-    std::cout << "CreateCircle"  << " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
-    Point p = {0,int(r)};
-    float d = 1.0f - r; 
-    screen.putPixel(c + p);
-    screen.putPixel(c+Point{p.x,-p.y});
-    screen.putPixel(c+Point{p.y,p.x});
-    screen.putPixel(c+Point{-p.y,p.x});
-
-    while(p.x <= p.y){
-        p.x += 1; 
-        if(d < 0){
-            p.y = p.y; 
-            d += 2 * p.x + 1; 
-        }
-        else{
-            p.y = p.y -1; 
-            d += 2 * p.x + 1 - 2 * p.y; 
-        }
-        screen.putPixel(c + Point{p.x,p.y});
-        screen.putPixel(c + Point{p.x,-p.y});
-        screen.putPixel(c + Point{-p.x,-p.y});
-        screen.putPixel(c + Point{-p.x,p.y});
-        screen.putPixel(c + Point{p.y,p.x});
-        screen.putPixel(c + Point{p.y,-p.x});
-        screen.putPixel(c + Point{-p.y,-p.x});
-        screen.putPixel(c + Point{-p.y,p.x});
-    }
-}
-
 // screen
 Screen screen; 
 
 void mainloop() {
-	glfwInit();
-	GLFWwindow* window; 
-	createWindow(window, SCR_WIDTH, SCR_HEIGHT);
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwInit();
+    GLFWwindow* window; 
+    createWindow(window, SCR_WIDTH, SCR_HEIGHT);
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	
-	//glad
-	gladInit();
+    //glad
+    gladInit();
 
     Shader shader("./shader/shader.vs", "./shader/shader.fs");
     shader.use();
     glEnable(GL_PROGRAM_POINT_SIZE);
 
-	while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(.6,.2,.0,1.0);
         processInput(window);
         shader.use();
         screen.draw();
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+	glfwSwapBuffers(window);
+	glfwPollEvents();
     }
-	glfwDestroyWindow(window);
-	glfwTerminate();
+    glfwDestroyWindow(window);
+    glfwTerminate();
 }
 
 int main() {
@@ -196,12 +160,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void addCircle(Screen& screen, Point center, Point p) {
-    float radius = sqrt((center.x - p.x)*(center.x-p.x) + (center.y - p.y)*(center.y -p.y));
-    createCircle(screen,center,radius);
-}
 
 void mouse_button(GLFWwindow* window, int button, int action,int mods){
     static int click_cnt = 0; 
@@ -217,7 +175,7 @@ void mouse_button(GLFWwindow* window, int button, int action,int mods){
         }
         if(click_cnt == 2){
             p = {int(xpos),int(ypos)};
-            addCircle(screen, c, p);
+	    screen.putPixel(p);
             click_cnt = 0;
         }
     }

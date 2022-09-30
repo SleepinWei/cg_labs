@@ -3,4 +3,6 @@ build/
 bin/
 .vs/
 .vscode/
-./cicle/.cache
+./lab1/.cache
+glfw/
+glm/

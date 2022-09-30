@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# cmake
+apt-get -y update
+apt-get -y install cmake
+
 # glfw ready work
 apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev libx11-dev
 apt-get install -y libxrandr-dev libxi-dev libxinerama-dev libsdl2-dev libxcursor-dev
