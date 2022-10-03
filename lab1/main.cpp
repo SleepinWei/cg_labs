@@ -6,6 +6,7 @@
 #include<memory>
 #include"./shader/Shader.h"
 
+// Util functions 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button(GLFWwindow* window, int, int, int);
@@ -16,8 +17,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int gladInit();
 
 int g_xpos, g_ypos; 
-// std::vector<int> vertices = {};
-// std::vector<unsigned int> VAOs = {};
 
 const int SCR_WIDTH = 800;
 const int SCR_HEIGHT = 600;
@@ -73,6 +72,45 @@ public:
 
 // screen
 Screen screen; 
+
+void drawCircle(Point c,Point p_){
+    double r = sqrt((p_.x-c.x)*(p_.x-c.x) + (p_.y-c.y)*(p_.y-c.y));
+
+    // TODO:
+    // c: origin of circle 
+    // r: radius 
+    // to draw a pixel at point (x,y) on scrren, use "screen->putPixel({x,y});"
+
+    std::cout << "CreateCircle"  << " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
+    Point p = {0,int(r)};
+    float d = 1.0f - r; 
+    screen.putPixel(c + p);
+    screen.putPixel(c+Point{p.x,-p.y});
+    screen.putPixel(c+Point{p.y,p.x});
+    screen.putPixel(c+Point{-p.y,p.x});
+
+    while(p.x <= p.y){
+        p.x += 1; 
+        if(d < 0){
+            p.y = p.y; 
+            d += 2 * p.x + 1; 
+        }
+        else{
+            p.y = p.y -1; 
+            d += 2 * p.x + 1 - 2 * p.y; 
+        }
+        screen.putPixel(c + Point{p.x,p.y});
+        screen.putPixel(c + Point{p.x,-p.y});
+        screen.putPixel(c + Point{-p.x,-p.y});
+        screen.putPixel(c + Point{-p.x,p.y});
+        screen.putPixel(c + Point{p.y,p.x});
+        screen.putPixel(c + Point{p.y,-p.x});
+        screen.putPixel(c + Point{-p.y,-p.x});
+        screen.putPixel(c + Point{-p.y,p.x});
+    }
+
+    // END of TODO
+}
 
 void mainloop() {
     glfwInit();
@@ -175,7 +213,7 @@ void mouse_button(GLFWwindow* window, int button, int action,int mods){
         }
         if(click_cnt == 2){
             p = {int(xpos),int(ypos)};
-	    screen.putPixel(p);
+            drawCircle(c,p);
             click_cnt = 0;
         }
     }
