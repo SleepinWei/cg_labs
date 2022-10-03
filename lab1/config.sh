@@ -19,13 +19,14 @@ cd glfw && mkdir build && cd build && cmake .. && make -j8 && make install && cd
 #rm -rf glfw
 
 # git clone glm and compile
-if [ ! -d "glm" ]; then
-    git clone https://github.com/g-truc/glm.git
-fi
-if [ -d "glm/build" ]; then
-    rm -rf glm/build
-fi
-cd glm && mkdir build && cd build && cmake .. && make -j8 && make install && cd  ../../
-#rm -rf glm
+# if [ ! -d "glm" ]; then
+#     git clone https://github.com/g-truc/glm.git
+# fi
+# if [ -d "glm/build" ]; then
+#     rm -rf glm/build
+# fi
+# cd glm && mkdir build && cd build && cmake .. && make -j8 && make install && cd  ../../
+# #rm -rf glm
+sudo apt-get install libglm-dev
 
 ./compile_project.sh
