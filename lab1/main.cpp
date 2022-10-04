@@ -86,7 +86,7 @@ Screen screen;
 void drawCircle(Point c,Point p_){
     double r = sqrt((p_.x-c.x)*(p_.x-c.x) + (p_.y-c.y)*(p_.y-c.y));
     std::cout << "CreateCircle"  << " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
-    int maxPointNum = int(ceil(r) * ceil(r) + 10);
+    int maxPointNum = int(ceil(r)) * 4+ 20;
     screen.reserve(maxPointNum);
     auto begTime = glfwGetTime();
 
