@@ -42,6 +42,8 @@ public:
 
     Screen(){
         dirty = true; 
+        VAO = 0;
+        VBO = 0;
     }
 
     void draw(){
@@ -63,9 +65,17 @@ public:
         glDrawArrays(GL_POINTS,0,vertices.size()/2);
     }
 
+    void reserve(int size){
+        if(vertices.size() + size >= vertices.capacity()){
+            vertices.reserve(size + vertices.size());
+        }
+    }
+
     void putPixel(const Point& p){
-        vertices.push_back(p.x * 2.0 / SCR_WIDTH - 1);
-        vertices.push_back(-p.y * 2.0 / SCR_HEIGHT + 1);
+        float x = p.x * 2.0 / SCR_WIDTH - 1;
+        float y = -p.y * 2.0 / SCR_HEIGHT + 1;
+        vertices.push_back(x);
+        vertices.push_back(y);
         dirty = true;
     }
 };
@@ -75,13 +85,16 @@ Screen screen;
 
 void drawCircle(Point c,Point p_){
     double r = sqrt((p_.x-c.x)*(p_.x-c.x) + (p_.y-c.y)*(p_.y-c.y));
+    std::cout << "CreateCircle"  << " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
+    int maxPointNum = int(ceil(r) * ceil(r) + 10);
+    screen.reserve(maxPointNum);
+    auto begTime = glfwGetTime();
 
     // TODO:
     // c: origin of circle 
     // r: radius 
     // to draw a pixel at point (x,y) on scrren, use "screen->putPixel({x,y});"
 
-    std::cout << "CreateCircle"  << " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
     Point p = {0,int(r)};
     float d = 1.0f - r; 
     screen.putPixel(c + p);
@@ -110,6 +123,7 @@ void drawCircle(Point c,Point p_){
     }
 
     // END of TODO
+    std::cout << (glfwGetTime() - begTime) * 1000 * 1000 << "us\n"; 
 }
 
 void mainloop() {
