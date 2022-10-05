@@ -7,7 +7,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 
 MESSAGE(STATUS ${PROJECT_SOURCE_DIR})
-set(EXECUTABLE_OUTPUT_PATH ../.)
+set(EXECUTABLE_OUTPUT_PATH .)
 set(SRC_LIST main.cpp glad.c ./shader/Shader.h ./shader/Shader.cpp)
 
 add_executable(circle ${SRC_LIST})
