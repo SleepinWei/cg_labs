@@ -51,7 +51,7 @@ public:
 class Buffer{
 public:
     Buffer(int size);
-    void putPixel(const Point& p);
+    void putPixel(int x,int y);
 public:
     std::vector<int> buffer;
     int cnt; 
@@ -70,34 +70,34 @@ void func1(Point c,double r){
     //TODO: implement MID POINT algorithm to draw a circle here. 
     // c: center of circle
     // r: radius of circle 
-    // to put a white pixel on position (x,y) on screen, call "buff.putPixel({x,y});"
+    // to put a white pixel on position (x,y) on screen, call "buff.putPixel(x,y);"
     // here x,y are all integers. 
-    Point p = {0,int(r)};
+    int cx = c.x; int cy = c.y;
+    int x = 0,y = int(r);
     
     int d = 1 - (int)r; 
-    buff.putPixel(c + p);
-    buff.putPixel(c+Point{p.x,-p.y});
-    buff.putPixel(c+Point{p.y,p.x});
-    buff.putPixel(c+Point{-p.y,p.x});
+    buff.putPixel(cx,cy+y);
+    buff.putPixel(cx,cy-y);
+    buff.putPixel(cx + y,cy);
+    buff.putPixel(cx - y,cy);
 
-    while(p.x <= p.y){
-        p.x += 1; 
+    while(x <= y){
+        x += 1; 
         if(d < 0){
-            p.y = p.y;
-            d += 2 * p.x + 1; 
+            d += 2 * x + 1; 
         }
         else{
-            p.y = p.y -1; 
-            d += 2 * p.x + 1 - 2 * p.y; 
+            y = y -1; 
+            d += 2 * x + 1 - 2 * y; 
         }
-        buff.putPixel(c + Point{p.x,p.y});
-        buff.putPixel(c + Point{p.x,-p.y});
-        buff.putPixel(c + Point{-p.x,-p.y});
-        buff.putPixel(c + Point{-p.x,p.y});
-        buff.putPixel(c + Point{p.y,p.x});
-        buff.putPixel(c + Point{p.y,-p.x});
-        buff.putPixel(c + Point{-p.y,-p.x});
-        buff.putPixel(c + Point{-p.y,p.x});
+        buff.putPixel(cx + x,cy + y);
+        buff.putPixel(cx + x, cy - y);
+        buff.putPixel(cx - x, cy -y);
+        buff.putPixel(cx -x,cy + y);
+        buff.putPixel(cx + y,cy + x);
+        buff.putPixel(cx + y,cy-x);
+        buff.putPixel(cx  -y,cy-x);
+        buff.putPixel(cx  -y,cy + x);
     }
 
     // END of TODO
@@ -116,26 +116,29 @@ void func2(Point c,double r){
     //TODO: implement some naive algorithm to draw a circle here 
     // c: center of circle 
     // r: radius of circle
-    // to put a white pixel on position (x,y) on screen, call "buff.putPixel({x,y});"
+    // to put a white pixel on position (x,y) on screen, call "buff.putPixel(x,y);"
     // here x,y are all integers. 
 
-    Point p = {0,int(r)};
-    buff.putPixel(c + p);
-    buff.putPixel(c+Point{p.x,-p.y});
-    buff.putPixel(c+Point{p.y,p.x});
-    buff.putPixel(c+Point{-p.y,p.x});
+    int x = 0;
+    int y = (int)r; 
+    int cx = c.x;
+    int cy = c.y;
+    buff.putPixel(cx,cy+y);
+    buff.putPixel(cx,cy-y);
+    buff.putPixel(cx + y,cy);
+    buff.putPixel(cx - y,cy);
 
-    while(p.x <= p.y){
-        p.x += 1; 
-        p.y = int(sqrt(r * r - (p.x) * (p.x)));
-        buff.putPixel(c + Point{p.x,p.y});
-        buff.putPixel(c + Point{p.x,-p.y});
-        buff.putPixel(c + Point{-p.x,-p.y});
-        buff.putPixel(c + Point{-p.x,p.y});
-        buff.putPixel(c + Point{p.y,p.x});
-        buff.putPixel(c + Point{p.y,-p.x});
-        buff.putPixel(c + Point{-p.y,-p.x});
-        buff.putPixel(c + Point{-p.y,p.x});
+    while(x <=y){
+        x += 1; 
+        y = int(sqrt(r * r - (x) * (x)));
+        buff.putPixel(cx + x,cy + y);
+        buff.putPixel(cx + x, cy - y);
+        buff.putPixel(cx - x, cy -y);
+        buff.putPixel(cx -x,cy + y);
+        buff.putPixel(cx + y,cy + x);
+        buff.putPixel(cx + y,cy-x);
+        buff.putPixel(cx  -y,cy-x);
+        buff.putPixel(cx  -y,cy + x);
     }
 
     // END of TODO
@@ -292,13 +295,13 @@ void Screen::append(Buffer& buff){
     }
     dirty = true;
 }
-void Buffer::putPixel(const Point& p){
+void Buffer::putPixel(int x,int y){
     if(cnt + 2 > buffer.size()){
         std::cout <<"Too many pixels!"<<'\n';
         return;
     }
-    buffer[cnt++] = p.x; 
-    buffer[cnt++] = p.y; 
+    buffer[cnt++] = x; 
+    buffer[cnt++] = y; 
 }
 Buffer::Buffer(int size){
     std::vector<int>(size).swap(buffer);
