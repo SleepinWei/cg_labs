@@ -10,7 +10,7 @@ apt-get install -y libxrandr-dev libxi-dev libxinerama-dev libsdl2-dev libxcurso
 
 # git clone glfw and compile 
 if [ ! -d "glfw" ]; then
-    git clone git@github.com:glfw/glfw.git
+    git clone https://github.com/glfw/glfw.git
 fi
 if [ -d "glfw/build" ]; then
     rm -rf glfw/build
