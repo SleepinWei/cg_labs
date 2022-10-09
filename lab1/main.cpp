@@ -71,34 +71,9 @@ void func1(Point c,double r){
     // c: center of circle
     // r: radius of circle 
     // to put a white pixel on position (x,y) on screen, call "buff.putPixel(x,y);"
-    // here x,y are all integers. 
-    int cx = c.x; int cy = c.y;
-    int x = 0,y = int(r);
-    
-    int d = 1 - (int)r; 
-    buff.putPixel(cx,cy+y);
-    buff.putPixel(cx,cy-y);
-    buff.putPixel(cx + y,cy);
-    buff.putPixel(cx - y,cy);
+    // here x,y are all integers.
 
-    while(x <= y){
-        x += 1; 
-        if(d < 0){
-            d += 2 * x + 1; 
-        }
-        else{
-            y = y -1; 
-            d += 2 * x + 1 - 2 * y; 
-        }
-        buff.putPixel(cx + x,cy + y);
-        buff.putPixel(cx + x, cy - y);
-        buff.putPixel(cx - x, cy -y);
-        buff.putPixel(cx -x,cy + y);
-        buff.putPixel(cx + y,cy + x);
-        buff.putPixel(cx + y,cy-x);
-        buff.putPixel(cx  -y,cy-x);
-        buff.putPixel(cx  -y,cy + x);
-    }
+
 
     // END of TODO
     }
@@ -117,29 +92,10 @@ void func2(Point c,double r){
     // c: center of circle 
     // r: radius of circle
     // to put a white pixel on position (x,y) on screen, call "buff.putPixel(x,y);"
-    // here x,y are all integers. 
+    // here x,y are all integers.
 
-    int x = 0;
-    int y = (int)r; 
-    int cx = c.x;
-    int cy = c.y;
-    buff.putPixel(cx,cy+y);
-    buff.putPixel(cx,cy-y);
-    buff.putPixel(cx + y,cy);
-    buff.putPixel(cx - y,cy);
 
-    while(x <=y){
-        x += 1; 
-        y = int(sqrt(r * r - (x) * (x)));
-        buff.putPixel(cx + x,cy + y);
-        buff.putPixel(cx + x, cy - y);
-        buff.putPixel(cx - x, cy -y);
-        buff.putPixel(cx -x,cy + y);
-        buff.putPixel(cx + y,cy + x);
-        buff.putPixel(cx + y,cy-x);
-        buff.putPixel(cx  -y,cy-x);
-        buff.putPixel(cx  -y,cy + x);
-    }
+
 
     // END of TODO
     }
