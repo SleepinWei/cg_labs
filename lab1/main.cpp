@@ -2,9 +2,9 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<iostream>
-#include<vector>
 #include<memory>
-#include"./shader/Shader.h"
+#include "Shader.h"
+#include "algorithm.hpp"
 
 // Util functions that do not matter
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -13,136 +13,7 @@ void processInput(GLFWwindow* window);
 int createWindow(GLFWwindow*& window, int width, int height, std::string title = "Demo");
 int gladInit();
 
-int g_xpos, g_ypos; 
-
-const int SCR_WIDTH = 800;
-const int SCR_HEIGHT = 600;
-
-struct Point {
-    int x, y; // pixel position on screen
-
-    Point operator+(Point p){
-        return {p.x + x, p.y + y};
-    }
-
-    Point operator-(Point p){
-        return {x-p.x,y-p.y};
-    }
-};
-
-class Buffer;
-class Screen{
-public:
-    std::vector<float> vertices;
-    GLuint VAO;
-    GLuint VBO;
-    bool dirty; 
-
-    Screen();
-
-    void draw();
-
-    void append(Buffer& buffer);
-};
-
-class Buffer{
-public:
-    Buffer(int size);
-    inline void putPixel(int x,int y);
-public:
-    std::vector<int> buffer;
-    int cnt; 
-};
-
-// screen
-Screen screen; 
-
-void func1(Point c,double r){
-    Buffer buff(12*int(ceil(r))+64); 
-    int t = 10000;
-    auto begTime = glfwGetTime();
-
-    while(t--){
-        buff.cnt = 0;
-    //TODO: implement MID POINT algorithm to draw a circle here. 
-    // c: center of circle
-    // r: radius of circle 
-    // to put a white pixel on position (x,y) on screen, call "buff.putPixel(x,y);"
-    // here x,y are all integers. 
-    int cx = c.x; int cy = c.y;
-    int x = 0,y = int(r);
-    
-    int d = 1 - (int)r; 
-    buff.putPixel(cx,cy+y);
-    buff.putPixel(cx,cy-y);
-    buff.putPixel(cx + y,cy);
-    buff.putPixel(cx - y,cy);
-
-    while(x <= y){
-        x += 1; 
-        if(d < 0){
-            d += 2 * x + 1; 
-        }
-        else{
-            y = y -1; 
-            d += 2 * x + 1 - 2 * y; 
-        }
-        buff.putPixel(cx + x,cy + y);
-        buff.putPixel(cx + x, cy - y);
-        buff.putPixel(cx - x, cy -y);
-        buff.putPixel(cx -x,cy + y);
-        buff.putPixel(cx + y,cy + x);
-        buff.putPixel(cx + y,cy-x);
-        buff.putPixel(cx  -y,cy-x);
-        buff.putPixel(cx  -y,cy + x);
-    }
-
-    // END of TODO
-    }
-    std::cout <<"func1: "<< (glfwGetTime() - begTime) * 1000 << "ms\n"; 
-    screen.append(buff);
-}
-
-void func2(Point c,double r){
-    Buffer buff(12*int(ceil(r))+64); 
-    int t = 10000; 
-    auto begTime = glfwGetTime();
-
-    while(t--){
-        buff.cnt=0;
-    //TODO: implement some naive algorithm to draw a circle here 
-    // c: center of circle 
-    // r: radius of circle
-    // to put a white pixel on position (x,y) on screen, call "buff.putPixel(x,y);"
-    // here x,y are all integers. 
-
-    int x = 0;
-    int y = (int)r; 
-    int cx = c.x;
-    int cy = c.y;
-    buff.putPixel(cx,cy+y);
-    buff.putPixel(cx,cy-y);
-    buff.putPixel(cx + y,cy);
-    buff.putPixel(cx - y,cy);
-
-    while(x <=y){
-        x += 1; 
-        y = int(sqrt(r * r - (x) * (x)));
-        buff.putPixel(cx + x,cy + y);
-        buff.putPixel(cx + x, cy - y);
-        buff.putPixel(cx - x, cy -y);
-        buff.putPixel(cx -x,cy + y);
-        buff.putPixel(cx + y,cy + x);
-        buff.putPixel(cx + y,cy-x);
-        buff.putPixel(cx  -y,cy-x);
-        buff.putPixel(cx  -y,cy + x);
-    }
-
-    // END of TODO
-    }
-    std::cout <<"func2: "<< (glfwGetTime() - begTime) * 1000 << "ms\n"; 
-    screen.append(buff);
-}
+extern Screen screen;
 
 
 void mainloop() {
@@ -155,7 +26,7 @@ void mainloop() {
     //glad
     gladInit();
 
-    Shader shader("./shader/shader.vs", "./shader/shader.fs");
+    Shader shader("shader.vs", "shader.fs");
     shader.use();
     glEnable(GL_PROGRAM_POINT_SIZE);
 
@@ -217,10 +88,11 @@ int createWindow(GLFWwindow*& window,
 void drawCircle(Point c,Point p_){
     double r = sqrt((p_.x-c.x)*(p_.x-c.x) + (p_.y-c.y)*(p_.y-c.y));
     std::cout << "Create Circle: "<< " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
+    std::shared_ptr<Algorithm> dda(new DDA);
+    std::shared_ptr<Algorithm> bresham(new Bresham);
 
-    func1(c,r); 
-    //func2({c.x+25,c.y},r); 
-    func2(c, r);
+    dda->exec_algorithm(c, r);
+    bresham->exec_algorithm(c, r);
 }
 
 void processInput(GLFWwindow* window)
@@ -260,48 +132,3 @@ void mouse_button(GLFWwindow* window, int button, int action,int mods){
         }
     }
 }
-
-void Screen::draw(){
-    if(dirty){
-        if(VAO){
-            glDeleteVertexArrays(1,&VAO);
-            glDeleteBuffers(1,&VBO);
-        }
-        glGenVertexArrays(1,&VAO);
-        glGenBuffers(1,&VBO);
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER,VBO);
-        glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(float),vertices.data(), GL_STATIC_DRAW);
-        glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
-        glEnableVertexAttribArray(0);
-        dirty = false;
-    }
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_POINTS,0,vertices.size()/2);
-}
-Screen::Screen(){
-    dirty = false; 
-    VAO = 0;
-    VBO = 0;
-}
-void Screen::append(Buffer& buff){
-    for(int i =0 ;i<buff.cnt/2;i++){
-        float x = buff.buffer[2*i] * 2.0 / SCR_WIDTH - 1;
-        float y = -buff.buffer[2*i+1] * 2.0 / SCR_HEIGHT + 1;
-        vertices.emplace_back(x);
-        vertices.emplace_back(y);
-    }
-    dirty = true;
-}
-void Buffer::putPixel(int x,int y){
-    if(cnt + 2 > buffer.size()){
-        std::cout <<"Too many pixels!"<<'\n';
-        return;
-    }
-    buffer[cnt++] = x; 
-    buffer[cnt++] = y; 
-}
-Buffer::Buffer(int size){
-    std::vector<int>(size).swap(buffer);
-    cnt = 0;
-}   

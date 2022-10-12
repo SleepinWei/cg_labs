@@ -6,11 +6,9 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 
-MESSAGE(STATUS ${PROJECT_SOURCE_DIR})
-set(EXECUTABLE_OUTPUT_PATH .)
-set(SRC_LIST main.cpp glad.c ./shader/Shader.h ./shader/Shader.cpp)
+set(EXECUTABLE_OUTPUT_PATH ../)
 
-add_executable(circle ${SRC_LIST})
+add_executable(circle main.cpp utils/glad.c utils/Shader.cpp include/buffer_screen.hpp include/point.hpp include/algorithm.hpp)
 
 target_include_directories(circle PUBLIC ${PROJECT_SOURCE_DIR}/include ${OPENGL_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/cmake)
 
