@@ -17,10 +17,17 @@ As for windows users, please help yourself.
 
 * compile_project.sh
     the scripts to compile the testing project -- drawing the points.
+
+* include/point.hpp
+    encapsulate the point structure.
+
+* include/algorithm.hpp
+    encapsulate the algorithm class. You are supposed to fill your code in this file.
+
+* include/buffer_screen.hpp
+    encapsulate the buffer class and screen class.
     
 * main.cpp
-    encapsulate the auxiliary function, which is used to draw the point.
-
     provide the mainloop for rendering.
 
 After running compile_project.sh, you can find an executable named `circle` in `build` directory.
@@ -31,9 +38,9 @@ After running compile_project.sh, you can find an executable named `circle` in `
 
 In this lab, you should
 
-* implement two functions in `main.cpp`. The places where you should fill your code in are marked with `\\TODO:`
-  * In `func1`, you should implement bresenham algorithm to draw a circle.
-  * In `func2`, you should implement DDA algorithm to draw a circle.
+* implement two functions in `include/algorithm.cpp`. The places where you should fill your code in are marked with `\\TODO:`
+  * In class `DDA`, you should implement DDA algorithm to draw a circle.
+  * In class `Bresham`, you should implement bresenham algorithm to draw a circle.
 
 * compare the performance of two algorithms and explain why the gap of performance exists.
 
