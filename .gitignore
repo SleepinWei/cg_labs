@@ -6,3 +6,5 @@ bin/
 ./lab1/.cache
 glfw/
 glm/
+test/
+*.exe

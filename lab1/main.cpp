@@ -8,12 +8,9 @@
 
 // Util functions that do not matter
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button(GLFWwindow* window, int, int, int);
 void processInput(GLFWwindow* window);
-unsigned int loadTexture(const char *path);
 int createWindow(GLFWwindow*& window, int width, int height, std::string title = "Demo");
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 int gladInit();
 
 int g_xpos, g_ypos; 
@@ -61,8 +58,8 @@ public:
 Screen screen; 
 
 void func1(Point c,double r){
-    Buffer buff(16*int(ceil(r))+64); 
-    int t = 1000;
+    Buffer buff(12*int(ceil(r))+64); 
+    int t = 10000;
     auto begTime = glfwGetTime();
 
     while(t--){
@@ -107,8 +104,8 @@ void func1(Point c,double r){
 }
 
 void func2(Point c,double r){
-    Buffer buff(16*int(ceil(r))+64); 
-    int t = 1000; 
+    Buffer buff(12*int(ceil(r))+64); 
+    int t = 10000; 
     auto begTime = glfwGetTime();
 
     while(t--){
@@ -273,7 +270,7 @@ void Screen::draw(){
         glGenBuffers(1,&VBO);
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER,VBO);
-        glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(float),&vertices[0],GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(float),vertices.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
         glEnableVertexAttribArray(0);
         dirty = false;
@@ -282,12 +279,12 @@ void Screen::draw(){
     glDrawArrays(GL_POINTS,0,vertices.size()/2);
 }
 Screen::Screen(){
-    dirty = true; 
+    dirty = false; 
     VAO = 0;
     VBO = 0;
 }
 void Screen::append(Buffer& buff){
-    for(int i =0 ;i<buff.cnt;i++){
+    for(int i =0 ;i<buff.cnt/2;i++){
         float x = buff.buffer[2*i] * 2.0 / SCR_WIDTH - 1;
         float y = -buff.buffer[2*i+1] * 2.0 / SCR_HEIGHT + 1;
         vertices.emplace_back(x);
