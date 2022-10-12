@@ -48,7 +48,7 @@ public:
 class Buffer{
 public:
     Buffer(int size);
-    void putPixel(int x,int y);
+    inline void putPixel(int x,int y);
 public:
     std::vector<int> buffer;
     int cnt; 
@@ -216,10 +216,11 @@ int createWindow(GLFWwindow*& window,
 
 void drawCircle(Point c,Point p_){
     double r = sqrt((p_.x-c.x)*(p_.x-c.x) + (p_.y-c.y)*(p_.y-c.y));
-    std::cout << "Create Cicle: "<< " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
+    std::cout << "Create Circle: "<< " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
 
     func1(c,r); 
-    func2({c.x+25,c.y},r); 
+    //func2({c.x+25,c.y},r); 
+    func2(c, r);
 }
 
 void processInput(GLFWwindow* window)
