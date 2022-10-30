@@ -20,38 +20,40 @@ void Model::fromMesh(const Mesh& mesh) {
 		Vertex* v1 = this->vertices[mindices[3 * i + 1]];
 		Vertex* v2 = this->vertices[mindices[3 * i + 2]];
 
-		Halfedge* edge = new Halfedge[3];
+		Halfedge* edge[3];
+		for (int i = 0; i < 3;i++) 
+			edge[i] = new Halfedge[3];
 		Face* face = new Face;
 
 		// face
-		face->halfedge = &edge[0];
+		face->halfedge = edge[0];
 
 		// edge
-		edge[0].next = &edge[1]; 
-		edge[1].next = &edge[2];
-		edge[2].next = &edge[0];
-		edge[0].incident_face = face;
-		edge[1].incident_face = face;
-		edge[2].incident_face = face;
-		edge[0].incident_vertex = v0;
-		edge[1].incident_vertex = v1;
-		edge[2].incident_vertex = v2;
+		edge[0]->next = edge[1]; 
+		edge[1]->next = edge[2];
+		edge[2]->next = edge[0];
+		edge[0]->incident_face = face;
+		edge[1]->incident_face = face;
+		edge[2]->incident_face = face;
+		edge[0]->incident_vertex = v0;
+		edge[1]->incident_vertex = v1;
+		edge[2]->incident_vertex = v2;
 		if (v2->indcident_halfedge)
-			edge[0].opposite = v2->indcident_halfedge;
+			edge[0]->opposite = v2->indcident_halfedge;
 		if (v1->indcident_halfedge) {
-			edge[2].opposite = v1->indcident_halfedge;
+			edge[2]->opposite = v1->indcident_halfedge;
 		}
 		if (v0->indcident_halfedge) {
-			edge[1].opposite = v0->indcident_halfedge;
+			edge[1]->opposite = v0->indcident_halfedge;
 		}
 
 		// vertex
-		v0->indcident_halfedge = &edge[0];
-		v1->indcident_halfedge = &edge[1];
-		v2->indcident_halfedge = &edge[2];
+		v0->indcident_halfedge = edge[0];
+		v1->indcident_halfedge = edge[1];
+		v2->indcident_halfedge = edge[2];
 
 		for (int i = 0; i < 3; i++) {
-			this->halfedges.push_back(&edge[i]);
+			this->halfedges.push_back(edge[i]);
 		}
 		this->faces.push_back(face);
 	}
