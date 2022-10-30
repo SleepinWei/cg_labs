@@ -6,3 +6,5 @@ bin/
 ./lab1/.cache
 test/
 *.exe
+./lab2/Debug
+./lab2/Release
