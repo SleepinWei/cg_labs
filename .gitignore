@@ -4,7 +4,5 @@ bin/
 .vs/
 .vscode/
 ./lab1/.cache
-glfw/
-glm/
 test/
 *.exe
