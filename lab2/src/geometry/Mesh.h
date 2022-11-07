@@ -6,7 +6,9 @@
 
 #include <string>
 #include <vector>
-
+enum class Shape {
+    PLANE
+};
 class Mesh {
 public:
     // mesh Data
@@ -18,4 +20,5 @@ public:
     Mesh(const std::vector<glm::vec3>& vertices_, const std::vector<unsigned int>& indices_);
 
 	static Mesh loadMesh(std::string const& path);
+    static Mesh loadShape(Shape shape, int n);
 };

@@ -16,6 +16,28 @@ Mesh::Mesh(const std::vector<glm::vec3>& vertices_, const std::vector<unsigned i
 	;
 }
 
+Mesh Mesh::loadShape(Shape shape, int n) {
+    Mesh mesh;
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            mesh.vertices.push_back({2 * (j * 1.0f/n) -1,0.0f,2*(i*1.0f/n)});
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int index = i * (n+1) + j;
+            mesh.indices.push_back(index);
+            mesh.indices.push_back(index + n + 1);
+            mesh.indices.push_back(index + 1);
+
+            mesh.indices.push_back(index + 1);
+            mesh.indices.push_back(index + n + 1);
+            mesh.indices.push_back(index + n + 2);
+        }
+    }
+    return mesh;
+}
+
 Mesh combineMesh(const std::vector<Mesh>& meshes) {
     // TODO:
     Mesh resultMesh;
@@ -40,7 +62,7 @@ Mesh Mesh::loadMesh(std::string const& path)
 {
     // read file via ASSIMP
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene = importer.ReadFile(path,aiProcess_JoinIdenticalVertices);
     // check for errors
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {

@@ -19,6 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\geometry\half-edge.cpp" />
     <ClCompile Include="src\geometry\Mesh.cpp" />
     <ClCompile Include="src\geometry\Model.cpp" />
@@ -30,6 +37,15 @@
     <ClCompile Include="src\utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\geometry\half-edge.h" />
     <ClInclude Include="src\geometry\Mesh.h" />
@@ -38,6 +54,7 @@
     <ClInclude Include="src\manager\Key.h" />
     <ClInclude Include="src\utils\Camera.h" />
     <ClInclude Include="src\utils\global.h" />
+    <ClInclude Include="src\utils\GUI.h" />
     <ClInclude Include="src\utils\Shader.h" />
     <ClInclude Include="src\utils\Utils.h" />
   </ItemGroup>

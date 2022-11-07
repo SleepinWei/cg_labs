@@ -1,13 +1,18 @@
 #pragma once
 #include<glm/glm.hpp>
 
+int face_idcnt = 0;
+int v_idcnt = 0;
+int edge_idcnt = 0;
 struct Halfedge;
 struct Face {
 	int id;
 	Halfedge* halfedge;
+	bool valid;
 
 	Face() {
-		id = 0;
+		id = ++face_idcnt;
+		valid = true;
 		halfedge = nullptr;
 	}
 };
@@ -17,10 +22,13 @@ struct Vertex {
 	glm::vec3 position;
 	Halfedge* indcident_halfedge;
 
+	bool valid;
+
 	Vertex() {
-		id = 0;
+		id = ++v_idcnt;
 		position = glm::vec3(0.0f);
 		indcident_halfedge = nullptr;
+		valid = true;
 	}
 };
 
@@ -31,11 +39,14 @@ struct Halfedge{
 	Face* incident_face;
 	Vertex* incident_vertex;
 
+	bool valid;
+
 	Halfedge() {
-		id = 0;
+		id = ++edge_idcnt;
 		next = nullptr;
 		opposite = nullptr;
 		incident_face = nullptr;
 		incident_vertex = nullptr;
+		valid = true;
 	}
 };
