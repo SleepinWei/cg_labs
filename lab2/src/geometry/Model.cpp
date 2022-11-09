@@ -53,10 +53,10 @@ void Model::collapseEdge(int index) {
 	obehind->opposite->opposite = onext->opposite;
 
 	// finally, the incident halfedge
-	Halfedge* beg = edge;
+	Halfedge* beg = edge->next->opposite;
 	Halfedge* iter = beg;
-	//iter->incident_vertex = v0; 
-	iter = beg->next->opposite;
+	iter->incident_vertex = v0; 
+	iter = iter->next->opposite;
 	while (beg != iter) {
 		iter->incident_vertex = v0;
 		iter = iter->next->opposite;
