@@ -7,19 +7,51 @@
 #include<random>
 
 void Model::randomCollapse() {
-	int r = 0;
-	while (r < halfedges.size()) {
-		if (halfedges[r]->valid)
-			break;
-		r++;
-	}
+	//while (1) {
 
-	collapseEdge(r);
+	//	Halfedge* edge = halfedges[1215];
+	//	std::cout << edge->id << " " << edge->next->id << " " << edge->next->next->id << " " << edge->next->next->next->id << std::endl;
+
+	//	Halfedge* edge_tmp1 = edge->opposite;
+	//	std::cout << edge_tmp1->id << " " << edge_tmp1->next->id << " " << edge_tmp1->next->next->id << " " << edge_tmp1->next->next->next->id << std::endl;
+	//}
+
+	//int cnt = 0;
+	//for (const auto halfedge : halfedges) {
+	//	if (!halfedge->opposite) {
+	//		++cnt;
+	//		std::cout << halfedge->id << std::endl;
+	//	}
+	//}
+	//std::cout << vertices.size() << " " << cnt << std::endl;
+	
+
+	//int r = 0;
+	//while (r < halfedges.size()) {
+	//	if (halfedges[r]->valid)
+	//		break;
+	//	r++;
+	//}
+	////std::cout << r << std::endl;
+	//collapseEdge(r);
+
+	/*while (true) {
+		int r = 0;
+		while (r < halfedges.size()) {
+			if (halfedges[r]->valid)
+				break;
+			r++;
+		}
+		std::cout << r << std::endl;
+		collapseEdge(r);
+	}*/
+	collapseEdge(1000);
 }
 void Model::collapseEdge(int index) {
 	bool hasoppsite = false;
 	//
 	Halfedge* edge = halfedges[index];
+
 	edge->valid = false;
 
 	Vertex* v0 = edge->next->next->incident_vertex;
@@ -32,6 +64,7 @@ void Model::collapseEdge(int index) {
 	Halfedge* behind = edge->next->next;
 	behind->valid = false;
 	f0->valid = false;
+	f0->halfedge = nullptr;
 
 	v0->position = (v0->position + v1->position) / 2.0f;
 	v1->valid = false;
@@ -41,26 +74,47 @@ void Model::collapseEdge(int index) {
 	hasoppsite = true;
 
 	// opposite
-	edge->opposite->valid = false;
-	Face* f1 = edge->opposite->incident_face;
-	f1->valid = false;
-	Halfedge* onext = edge->opposite->next;
-	onext->valid = false;
-	Halfedge* obehind = edge->opposite->next->next;
-	obehind->valid = false;
+	if (edge->opposite) {
+		edge->opposite->valid = false;
+		Face* f1 = edge->opposite->incident_face;
+		f1->valid = false;
+		f1->halfedge = nullptr;
+		Halfedge* onext = edge->opposite->next;
+		onext->valid = false;
+		Halfedge* obehind = edge->opposite->next->next;
+		obehind->valid = false;
 
-	onext->opposite->opposite = obehind->opposite;
-	obehind->opposite->opposite = onext->opposite;
+		onext->opposite->opposite = obehind->opposite;
+		obehind->opposite->opposite = onext->opposite;
+	}
 
 	// finally, the incident halfedge
+	//正向遍历
 	Halfedge* beg = edge->next->opposite;
-	Halfedge* iter = beg;
-	iter->incident_vertex = v0; 
-	iter = iter->next->opposite;
-	while (beg != iter) {
+	if (beg) {
+		Halfedge* iter = beg;
 		iter->incident_vertex = v0;
 		iter = iter->next->opposite;
+		while (iter && beg != iter) {
+			iter->incident_vertex = v0;
+			iter = iter->next->opposite;
+		}
 	}
+	
+
+	//逆向遍历
+	beg = edge->next->next->opposite;
+	if (beg) {
+		Halfedge* iter = beg->next->next;	
+		iter->incident_vertex = v0;
+		iter = iter->opposite;
+		while (iter && beg != iter) {
+			iter = iter->next->next;
+			iter->incident_vertex = v0;
+			iter = iter->opposite;
+		}
+	}
+
 	// delete edge
 
 	// NO release of memory
@@ -78,7 +132,7 @@ void Model::fromMesh(const Mesh& mesh) {
 	for (int i = 0; i < mvertices.size(); i++) {
 		Vertex* v = new Vertex;
 		v->position = mvertices[i]; 
-		this->vertices.emplace_back(v);
+		this->vertices.push_back(v);
 	}
 
 	for (int i = 0; i < mindices.size() / 3; i++) {
@@ -140,6 +194,25 @@ void Model::fromMesh(const Mesh& mesh) {
 		this->faces.push_back(face);
 	}
 
+	//for (int i = 0; i < mindices.size() / 3; ++i) {
+	//	int index0 = mindices[3 * i];
+	//	int index1 = mindices[3 * i + 1];
+	//	int index2 = mindices[3 * i + 2];
+	//	//opposite
+	//	if (map[index0][index2] && map[index2][index0]) {
+	//		map[index0][index2]->opposite = map[index2][index0];
+	//		map[index2][index0]->opposite = map[index0][index2];
+	//	}
+	//	if (map[index1][index0] && map[index0][index1]) {
+	//		map[index0][index1]->opposite = map[index1][index0];
+	//		map[index1][index0]->opposite = map[index0][index1];
+	//	}
+	//	if (map[index2][index1] && map[index1][index2]) {
+	//		map[index2][index1]->opposite = map[index1][index2];
+	//		map[index1][index2]->opposite = map[index2][index1];
+	//	}
+	//}
+
 	validFaces = this->faces.size();
 	validEdges = this->halfedges.size();
 	validVertices = this->vertices.size();
@@ -198,8 +271,12 @@ void Model::render(const Shader& shader) {
 			if (faces[i]->valid) {
 				// only register valid faces;
 				Halfedge* current = faces[i]->halfedge;
+				if(!current->valid)
+					std::cout << "current halfedge whether valid: " << current->valid << std::endl;
 				for (int j = 0; j < 3; j++) {
 					Vertex* v = current->incident_vertex;
+					if(!v->valid)
+						std::cout << "current incident_vertex whether valid: " << v->valid << std::endl;
 					glBufferSubData(GL_ARRAY_BUFFER, (9 * i + 3 * j) * sizeof(float), 3 * sizeof(float), &(v->position));
 					current = current->next;
 				}
