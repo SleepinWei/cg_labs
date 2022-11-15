@@ -6,6 +6,16 @@
 #include"Mesh.h"
 #include<random>
 
+template <class T>
+static int statical_cnt(std::vector<T> statical_arr) {
+	int res = 0;
+	for (const auto& element : statical_arr) {
+		if (element->valid)
+			++res;
+	}
+	return res;
+}
+
 void Model::randomCollapse() {
 	//while (1) {
 
@@ -26,28 +36,29 @@ void Model::randomCollapse() {
 	//std::cout << vertices.size() << " " << cnt << std::endl;
 	
 
-	//int r = 0;
-	//while (r < halfedges.size()) {
-	//	if (halfedges[r]->valid)
-	//		break;
-	//	r++;
-	//}
-	////std::cout << r << std::endl;
-	//collapseEdge(r);
+	int r = 0;
+	while (r < halfedges.size()) {
+		if (halfedges[r]->valid)
+			break;
+		r++;
+	}
+	//std::cout << r << std::endl;
+	collapseEdge(r);
 
-	/*while (true) {
-		int r = 0;
-		while (r < halfedges.size()) {
-			if (halfedges[r]->valid)
-				break;
-			r++;
-		}
-		std::cout << r << std::endl;
-		collapseEdge(r);
-	}*/
-	collapseEdge(1000);
+	//while (true) {
+	//	int r = 0;
+	//	while (r < halfedges.size()) {
+	//		if (halfedges[r]->valid)
+	//			break;
+	//		r++;
+	//	}
+	//	std::cout << r << std::endl;
+	//	collapseEdge(r);
+	//}
+	//collapseEdge(1000);
 }
 void Model::collapseEdge(int index) {
+	int tmp_validedges = validEdges, tmp_validfaces = validFaces, tmp_validvertex = validVertices;
 	bool hasoppsite = false;
 	//
 	Halfedge* edge = halfedges[index];
@@ -69,8 +80,10 @@ void Model::collapseEdge(int index) {
 	v0->position = (v0->position + v1->position) / 2.0f;
 	v1->valid = false;
 
-	behind->opposite->opposite = next->opposite;
-	next->opposite->opposite = behind->opposite;
+	if(behind->opposite)
+		behind->opposite->opposite = next->opposite;
+	if(next->opposite)
+		next->opposite->opposite = behind->opposite;
 	hasoppsite = true;
 
 	// opposite
@@ -84,8 +97,10 @@ void Model::collapseEdge(int index) {
 		Halfedge* obehind = edge->opposite->next->next;
 		obehind->valid = false;
 
-		onext->opposite->opposite = obehind->opposite;
-		obehind->opposite->opposite = onext->opposite;
+		if(onext->opposite)
+			onext->opposite->opposite = obehind->opposite;
+		if(obehind->opposite)
+			obehind->opposite->opposite = onext->opposite;
 	}
 
 	// finally, the incident halfedge
@@ -119,10 +134,19 @@ void Model::collapseEdge(int index) {
 
 	// NO release of memory
 	dirty = true;
-	validFaces -= 2;
-	validVertices -= 1;
-	validEdges -= 6;
+
+	validFaces = statical_cnt<Face*>(faces);
+	validVertices = statical_cnt<Vertex*>(vertices);
+	validEdges = statical_cnt<Halfedge*>(halfedges);
+
+	if (tmp_validfaces - validFaces != 2 || tmp_validvertex - validVertices != 1 || tmp_validedges - validEdges != 6) {
+		std::cout << "tmpFaces: " << tmp_validfaces << " tmpVertices: " << tmp_validvertex << " tmpEdges: " << tmp_validedges << std::endl;
+		std::cout << "validFaces: " << validFaces << " validVertices: " << validVertices << " validEdges: " << validEdges << std::endl;
+		std::cout << index << std::endl;
+	}
+	
 }
+
 
 void Model::fromMesh(const Mesh& mesh) {
 	//TODO: construct 'Model' from 'Mesh'
