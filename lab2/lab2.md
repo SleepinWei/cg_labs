@@ -72,6 +72,7 @@ In this lab, you should
   * In function `collapseEdge`, you should implement the algorithm to truly collapse the edge.
 
 We provide the visualization of the loaded model, You could make it appear by long pressing the right mouse button and rotating it clockwise simultaneously
+
 Attention! Adding some extra members in the `Model` class is admitted
 
 ## Submission
