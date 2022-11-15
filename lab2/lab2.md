@@ -11,44 +11,56 @@ As for Linux users, please help yourself.
 
 *   geometry
     * half-edge.h(.cpp)
+
         the half-edge data structure definition
 
     * Mesh.h(.cpp)
+
         encapsulate the Mesh structure
 
     * Model.h(.cpp)
+
         encapsulate the Model structure   You are supposed to finish the functions(`collapseEdge` `randomCollapse`) under this class 
 
 *   imgui
+
     the library files of imgui
 
 *   manager
     * InputManager.h(.cpp)
+
         encapsulate some mouse/keyboard event and action solution
 
     * Key.h
+
         the Macro-Def of event and action
 
 *   utils
     * Camera.h(.cpp)
+
         encapsulate the moving of camera
 
     * glad.c
+
         external library GLAD
 
     * GUI.h
+
         manage the GUI widget on the left top of the window
 
     * global.h
+
         define some global variable
     
     * Utils.h(.cpp)
+
         define some callback and commonly-used functions
     
     * Shader.h(.cpp)
+
         encapsulate the Shader structure
 
-main.cpp
+* main.cpp
     the entry of the procedure, providing the mainloop for rendering
 
 ## Instruction
