@@ -9,7 +9,7 @@ We provide the environment configuration on the Visual Studio on DEBUG x64 patte
 
 As for Linux users, please help yourself.
 
--- geometry
+*   geometry
     * half-edge.h(.cpp)
         the half-edge data structure definition
 
@@ -19,17 +19,17 @@ As for Linux users, please help yourself.
     * Model.h(.cpp)
         encapsulate the Model structure   You are supposed to finish the functions(`collapseEdge` `randomCollapse`) under this class 
 
--- imgui
+*   imgui
     the library files of imgui
 
--- manager
+*   manager
     * InputManager.h(.cpp)
         encapsulate some mouse/keyboard event and action solution
 
     * Key.h
         the Macro-Def of event and action
 
--- utils
+*   utils
     * Camera.h(.cpp)
         encapsulate the moving of camera
 
