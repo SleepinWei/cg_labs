@@ -79,20 +79,6 @@ void Model::fromMesh(const Mesh& mesh) {
 		edge[1]->incident_vertex = v1;
 		edge[2]->incident_vertex = v2;
 
-		//opposite
-		if (map[index0][index2]) {
-			edge[0]->opposite = map[index0][index2];
-			edge[0]->opposite->opposite = edge[0];
-		}
-		if (map[index1][index0]) {
-			edge[1]->opposite = map[index1][index0];
-			edge[1]->opposite->opposite = edge[1];
-		}
-		if (map[index2][index1]) {
-			edge[2]->opposite = map[index2][index1];
-			edge[2]->opposite->opposite = edge[2];
-		}
-
 		// vertex
 		if(v0->indcident_halfedge == nullptr)
 			v0->indcident_halfedge = edge[0];
@@ -106,6 +92,11 @@ void Model::fromMesh(const Mesh& mesh) {
 		}
 		this->faces.push_back(face);
 	}
+
+	//TODO: you are supposed to fill in the opposite attribute
+
+
+	//TODO -- END
 
 	validFaces = this->faces.size();
 	validEdges = this->halfedges.size();

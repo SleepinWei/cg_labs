@@ -20,7 +20,7 @@ As for Linux users, please help yourself.
 
     * Model.h(.cpp)
 
-        encapsulate the Model structure   You are supposed to finish the functions(`collapseEdge` `randomCollapse`) under this class 
+        encapsulate the Model structure   You are supposed to finish the functions(`collapseEdge` `randomCollapse` `fromMesh`) under this class 
 
 *   imgui
 
@@ -70,6 +70,7 @@ In this lab, you should
 * implement two functions in `src/geometry/Model.cpp`. The places where you should fill your code in are marked with `\\TODO:`
   * In function `randomCollapse`(callback function). You need to implement an algorithm that reduces the number of faces in certain order, ensuring that each call to the function itself reduces the number of face and and calls the function `collapseEdge` to truly collapse the face.
   * In function `collapseEdge`, you should implement the algorithm to truly collapse the edge.
+  * In function `fromMesh`, you should fill in the `opposite` attribute 
 
 We provide the visualization of the loaded model, You could make it appear by long pressing the right mouse button and rotating it clockwise simultaneously
 
