@@ -5,7 +5,7 @@
 
 ## Framework
 
-We provide the environment configuration on the Visual Studio
+We provide the environment configuration on the Visual Studio on DEBUG x64 pattern
 
 As for Linux users, please help yourself.
 

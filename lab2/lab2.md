@@ -5,7 +5,7 @@
 
 ## Framework
 
-We provide the environment configuration on the Visual Studio
+We provide the environment configuration on the Visual Studio on DEBUG x64 pattern
 
 As for Linux users, please help yourself.
 
@@ -56,9 +56,11 @@ main.cpp
 In this lab, you should
 
 * implement two functions in `src/geometry/Model.cpp`. The places where you should fill your code in are marked with `\\TODO:`
-  * In function `randomCollapse`(callback function). You need to implement an algorithm that reduces the number of faces in certain order, ensuring that each call to the function itself reduces the number of faces and and calls the function `collapseEdge` to truly collapse the face.
+  * In function `randomCollapse`(callback function). You need to implement an algorithm that reduces the number of faces in certain order, ensuring that each call to the function itself reduces the number of face and and calls the function `collapseEdge` to truly collapse the face.
   * In function `collapseEdge`, you should implement the algorithm to truly collapse the edge.
 
+We provide the visualization of the loaded model, You could make it appear by long pressing the right mouse button and rotating it clockwise simultaneously
+Attention! Adding some extra members in the `Model` class is admitted
 
 ## Submission
 
