@@ -17,6 +17,7 @@ static int statical_cnt(std::vector<T> statical_arr) {
 }
 
 void Model::randomCollapse() {
+
 	//while (1) {
 
 	//	Halfedge* edge = halfedges[1215];
@@ -42,9 +43,29 @@ void Model::randomCollapse() {
 			break;
 		r++;
 	}
-	//std::cout << r << std::endl;
-	collapseEdge(r);
 
+	//std::cout << r << std::endl;
+	collapseEdge(r);		//r=903 face_id=561会出问题 重复操作面561
+
+	//
+	auto detect_in = [](int val, std::vector<int>& arr) {return val == arr[0] || val == arr[1] || val == arr[2];};
+	//
+	//std::vector<int> tmp_save_edge;
+	//for (const auto& face : faces) {
+	//	if (face->valid) {
+	//		tmp_save_edge.clear();
+	//		tmp_save_edge.push_back(face->halfedge->id);
+	//		tmp_save_edge.push_back(face->halfedge->next->id);
+	//		tmp_save_edge.push_back(face->halfedge->next->next->id);
+	//		if (face->halfedge->opposite && detect_in(face->halfedge->opposite->id, tmp_save_edge) ||
+	//			face->halfedge->next->opposite && detect_in(face->halfedge->next->opposite->id, tmp_save_edge) ||
+	//			face->halfedge->next->next->opposite && detect_in(face->halfedge->next->next->opposite->id, tmp_save_edge)) {
+	//			std::cout << "error occur in " << face->id << std::endl;
+	//			std::cout << "error with r: " << r << std::endl;
+	//		}
+	//	}
+	//}
+	//std::cout << "finish" << std::endl;
 	//while (true) {
 	//	int r = 0;
 	//	while (r < halfedges.size()) {
@@ -52,8 +73,26 @@ void Model::randomCollapse() {
 	//			break;
 	//		r++;
 	//	}
-	//	std::cout << r << std::endl;
+	//	if(r == 903)
+	//		std::cout << r << std::endl;
 	//	collapseEdge(r);
+
+	//	//更新完检查是否有opposite出现在三角形内部
+	//	std::vector<int> tmp_save_edge;
+	//	for (const auto& face : faces) {
+	//		if (face->valid) {
+	//			tmp_save_edge.clear();
+	//			tmp_save_edge.push_back(face->halfedge->id);
+	//			tmp_save_edge.push_back(face->halfedge->next->id);
+	//			tmp_save_edge.push_back(face->halfedge->next->next->id);
+	//			if (face->halfedge->opposite && detect_in(face->halfedge->opposite->id, tmp_save_edge) ||
+	//				face->halfedge->next->opposite && detect_in(face->halfedge->next->opposite->id, tmp_save_edge) ||
+	//				face->halfedge->next->next->opposite && detect_in(face->halfedge->next->next->opposite->id, tmp_save_edge)) {
+	//				std::cout << "error occur in " << face->id << std::endl;
+	//				std::cout << "error with r: " << r << std::endl;
+	//			}
+	//		}
+	//	}
 	//}
 	//collapseEdge(1000);
 }

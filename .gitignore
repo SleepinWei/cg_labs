@@ -8,3 +8,5 @@ test/
 *.exe
 ./lab2/Debug
 ./lab2/Release
+./lab2_release/Debug
+./lab2_release/Release
