@@ -63,10 +63,10 @@ int main() {
             shader.setMat4("view", view);
             shader.setMat4("projection", projection);
 
-            /*glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             shader.setFloat("delta", 0.0f);
             shader.setVec4("color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-            myModel.render(shader);*/
+            myModel.render(shader);
 
             shader.setVec4("color", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
             shader.setFloat("delta", 0.001f);

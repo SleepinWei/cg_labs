@@ -149,6 +149,8 @@ void Model::render(const Shader& shader) {
 		glEnableVertexAttribArray(0);
 	}
 
+	int validCounter = 0;
+
 	if (dirty) {
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, faces.size() * 9 * sizeof(float), nullptr, GL_STATIC_DRAW);
@@ -162,9 +164,11 @@ void Model::render(const Shader& shader) {
 					Vertex* v = current->incident_vertex;
 					if(!v->valid)
 						std::cout << "current incident_vertex whether valid: " << v->valid << std::endl;
-					glBufferSubData(GL_ARRAY_BUFFER, (9 * i + 3 * j) * sizeof(float), 3 * sizeof(float), &(v->position));
+					glBufferSubData(GL_ARRAY_BUFFER, (9 * validCounter + 3 * j) * sizeof(float), 3 * sizeof(float), &(v->position));
 					current = current->next;
 				}
+
+				++validCounter;
 			}
 		}
 		dirty = false;
