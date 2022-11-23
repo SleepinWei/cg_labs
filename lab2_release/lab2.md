@@ -80,7 +80,7 @@ Attention! Adding some extra members in the `Model` class is admitted
 
 You should submit your **code** along with **a report**.
 
-Please **clarify the special condition you meet(concluding the specific, half-edge .etc. Better for drawing a diagram)** in your report.
+Please **clarify the special condition you meet(including the specific, half-edge .etc. Better for drawing a diagram)** in your report.
 
 Please submit on canvas before deadline.
 
