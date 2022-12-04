@@ -2,14 +2,12 @@
 #include"aliase.h"
 class Ray {
 public:
-	Ray() = default;
-	~Ray() = default;
+	Ray()=default;
+	~Ray();
 	
-	Ray(vec3 origin, vec3 direction): orig(origin),dir(direction) {}
+	Ray(vec3 origin, vec3 direction);
 
-	vec3 at(float t)const {
-		return orig + t * dir;
-	}
+	vec3 at(float t)const;
 
 public:
 	vec3 orig;

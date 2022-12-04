@@ -38,6 +38,8 @@ public:
 
 	virtual bool hit(const Ray& r,float t_min, float t_max, hit_record& rec) const override;
 
+	void addMaterial(const shared_ptr<Material>& mat);
+
 public:
 	vec3 center;
 	float radius;
