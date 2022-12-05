@@ -118,7 +118,7 @@ void Renderer::render(const shared_ptr<Scene>& scene) {
 
 	for (int j = h-1; j >= 0; j--) {
 		if (j % 20 == 0) {
-			std::cout << (h-1-j) * 1.0f / (h - 1) << "%\n";
+			std::cout << (h-1-j) * 1.0f / (h - 1)  * 100.<< "%\n";
 		}
 		for (int i = 0; i < w; i++) {
 			vec3 color(0, 0, 0);

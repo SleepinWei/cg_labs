@@ -36,16 +36,19 @@ void Model::randomCollapse() {
 	//}
 	//std::cout << vertices.size() << " " << cnt << std::endl;
 	
+	while (1) {
 
-	int r = 0;
-	while (r < halfedges.size()) {
-		if (halfedges[r]->valid)
-			break;
-		r++;
+
+		int r = 0;
+		while (r < halfedges.size()) {
+			if (halfedges[r]->valid)
+				break;
+			r++;
+		}
+
+		std::cout << r << std::endl;
+		collapseEdge(r);		//r=903 face_id=561会出问题 重复操作面561
 	}
-
-	//std::cout << r << std::endl;
-	collapseEdge(r);		//r=903 face_id=561会出问题 重复操作面561
 
 	//
 	auto detect_in = [](int val, std::vector<int>& arr) {return val == arr[0] || val == arr[1] || val == arr[2];};
