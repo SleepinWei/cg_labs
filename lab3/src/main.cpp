@@ -28,9 +28,9 @@ int main() {
 
 		auto s1 = std::make_shared<Sphere>(vec3(0.0f,-500.0f,0.0f), 500.0f, c_ground);
 		scene->add(s1);
-		auto s2 = std::make_shared<Sphere>(vec3(0.0f,1.0f,0.0f), 1.0f, red);
+		auto s2 = std::make_shared<Sphere>(vec3(0.0f,1.0f,0.0f), 1.0f, glass);
 		scene->add(s2);
-		auto s4 = std::make_shared<Sphere>(vec3(2.0f, 1.0f, 0.0f), 1.0f, glass);
+		auto s4 = std::make_shared<Sphere>(vec3(2.0f, 1.0f, 0.0f), 1.0f, red);
 		scene->add(s4);
 		auto s3 = std::make_shared<Sphere>(vec3(0.0f, 4.0f, 0.0f), 0.5f, light);
 		scene->addLight(s3);

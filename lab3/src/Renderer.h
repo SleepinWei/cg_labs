@@ -19,5 +19,5 @@ public:
 	// variables
 	int width, height;
 	int* image; // result pic
-	const color background = color(0.0f, 0.0f, 0.0f);
+	const color background = color(180.0f, 255.0f,255.0f)/255.0f;
 };
