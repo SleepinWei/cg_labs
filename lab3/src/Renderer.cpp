@@ -29,7 +29,6 @@ color Renderer::trace(const Ray& ray, const shared_ptr<Scene>& scene,int depth) 
 	const float reflect_atten = 0.7f;
 	const float refract_atten = 0.3f;
 	const float ka = 0.05f;
-	//TODO
 	if (depth >= 5) {
 		return color(0.0f);
 	}
@@ -41,70 +40,11 @@ color Renderer::trace(const Ray& ray, const shared_ptr<Scene>& scene,int depth) 
 	if (!isHit) {
 		return background;
 	}
-	
+
 	vec3 finalColor = vec3(0.0f);
-	switch (rec.mat_ptr->type) {
-	case MatType::GLASS: {
-		float ratio = rec.mat_ptr->refraction_ratio;
-		if (!rec.front_face) {
-			ratio = 1.0f / ratio;
-		}
-		//reflection
-		vec3 dir = glm::normalize(ray.dir);
-		vec3 reflectedDir = -2 * glm::dot(dir, rec.normal) * rec.normal + dir;
-		Ray reflected(rec.p, glm::normalize(reflectedDir));
-		color reflectColor = trace(reflected, scene,depth + 1);
+	//TODO: implement ray tracing and shading algorithm for 3 type of material.
 
-		//refraction
-		float cos_theta = fmin(dot(-ray.dir, rec.normal), 1.0f);
-		float sin_theta = sqrt(1.0f - cos_theta * cos_theta);
-		bool cannot_refract = ratio * sin_theta > 1.0f;
-
-		if (!cannot_refract) {
-			vec3 refractedDir = refract(ray.dir, rec.normal, ratio);
-			Ray refracted(rec.p, refractedDir);
-			color refractColor = trace(refracted, scene,depth+1);
-			finalColor = refractColor * refract_atten + reflectColor * reflect_atten;
-		}
-		else {
-			finalColor = reflectColor * reflect_atten;
-		}
-	}break;
-	case MatType::DIFFUSE: //DIFFUSE
-		// shading 
-	{
-		for (auto& light : scene->lights) {
-			// 
-			auto l_ = std::static_pointer_cast<Sphere>(light);
-			color& lightColor = l_->mat_ptr->albedo;
-
-			color& albedo = rec.mat_ptr->albedo;
-
-			vec3 L = glm::normalize(l_->center-rec.p);
-			Ray toLight(rec.p,L);
-			hit_record shadowRec;
-			scene->hit(toLight,0.001f,infinity,shadowRec);
-			bool inShadow = (shadowRec.object != light);
-
-			vec3 V = glm::normalize(scene->camera->origin - rec.p);
-			vec3 N = glm::normalize(rec.normal);
-			vec3 H = glm::normalize(V + L);
-			float NoL = std::max(glm::dot(N, L),0.0f);
-			float HoN = std::max(glm::dot(H, N),0.0f);
-			vec3 ambient = ka * lightColor * albedo ;
-			vec3 specular = std::powf(HoN,20.0f) * lightColor;
-			vec3 diffuse = NoL * albedo * lightColor;
-			float attenuation = std::min(1.0f / dot(l_->center - rec.p, l_->center - rec.p),1.0f);
-
-			finalColor =inShadow ? ambient : ambient +  (specular + diffuse) * attenuation;
-		}
-	}
-		break;
-	case MatType::LIGHT:
-		finalColor = rec.mat_ptr->albedo;
-		break;
-	}
-
+	//end of TODO
 	return finalColor;
 }
 
