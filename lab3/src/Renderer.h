@@ -12,7 +12,7 @@ public:
 	Renderer();
 	~Renderer();
 	// function
-	color trace(const Ray& ray,const shared_ptr<Scene>& scene); // trace ray
+	color trace(const Ray& ray,const shared_ptr<Scene>& scene,int depth); // trace ray
 	void render(const shared_ptr<Scene>& scene); // scene rendering
 	void writePic(const string& filename,const shared_ptr<Scene>& scene); // write to ppm picture
 public:

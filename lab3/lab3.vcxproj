@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\hittablecpp.cpp" />
+    <ClCompile Include="src\hittable.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\Renderer.cpp" />

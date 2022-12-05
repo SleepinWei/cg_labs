@@ -24,7 +24,7 @@
     <ClCompile Include="src\Ray.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\hittablecpp.cpp">
+    <ClCompile Include="src\hittable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene.cpp">
