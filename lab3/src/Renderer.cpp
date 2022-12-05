@@ -18,13 +18,6 @@ Renderer::~Renderer() {
 		delete image;
 }
 
-vec3 refract(const vec3& ray_in, const vec3& normal, float ratio) {
-	float cos_theta = fmin(glm::dot(-ray_in, normal), 1.0);
-	vec3 r_out_perp = ratio * (ray_in + cos_theta * normal);
-	vec3 r_out_parallel = -sqrtf(fabs(1.0 - glm::dot(r_out_perp,r_out_perp))) * normal;
-	return r_out_perp + r_out_parallel;
-}
-
 color Renderer::trace(const Ray& ray, const shared_ptr<Scene>& scene,int depth) {
 	const float reflect_atten = 0.7f;
 	const float refract_atten = 0.3f;
