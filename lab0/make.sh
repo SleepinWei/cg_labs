@@ -1,0 +1,1 @@
+g++ triangle.cpp glad.c -lglfw -ldl -o ./build/triangle.out
