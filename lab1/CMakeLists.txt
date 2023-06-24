@@ -8,9 +8,13 @@ find_package(GLFW3 REQUIRED)
 
 set(EXECUTABLE_OUTPUT_PATH ./)
 
-add_executable(circle main.cpp utils/glad.c utils/Shader.cpp include/buffer_screen.hpp include/point.hpp include/algorithm.hpp)
+set(SRC_LIST main.cpp utils/Shader.cpp include/buffer_screen.hpp include/point.hpp include/algorithm.hpp external/glad/glad.c)
 
-target_include_directories(circle PUBLIC ${PROJECT_SOURCE_DIR}/include ${OPENGL_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/cmake)
+# set(LINK_LIBRARIES -ldl -lm -lXinerama -lXrandr -lXi -lXcursor -lX11 -lpthread)
 
-target_link_libraries(circle ${GLFW3_LIBRARY} ${OPENGL_LIBRARIES} -ldl -lm -lXinerama -lXrandr -lXi -lXcursor -lX11 -lpthread)
+add_executable(circle ${SRC_LIST})
+
+target_include_directories(circle PUBLIC ${PROJECT_SOURCE_DIR}/include ${OPENGL_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/cmake ${PROJECT_SOURCE_DIR}/external)
+
+target_link_libraries(circle ${GLFW3_LIBRARY} ${OPENGL_LIBRARIES} -ldl)
 

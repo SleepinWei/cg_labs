@@ -1,53 +1,55 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
-#include<iostream>
-#include<memory>
 #include "Shader.h"
 #include "algorithm.hpp"
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <iostream>
+#include <memory>
 
 // Util functions that do not matter
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_button(GLFWwindow* window, int, int, int);
-void processInput(GLFWwindow* window);
-int createWindow(GLFWwindow*& window, int width, int height, std::string title = "Demo");
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void mouse_button(GLFWwindow *window, int, int, int);
+void processInput(GLFWwindow *window);
+GLFWwindow* createWindow(int width, int height, std::string title = "Demo");
 int gladInit();
 
 extern Screen screen;
 
-
-void mainloop() {
+void mainloop()
+{
     glfwInit();
-    GLFWwindow* window; 
-    createWindow(window, SCR_WIDTH, SCR_HEIGHT);
+    GLFWwindow *window =  createWindow(SCR_WIDTH, SCR_HEIGHT, "Rasterization");
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	
-    //glad
+
+    // glad
     gladInit();
 
     Shader shader("shader.vs", "shader.fs");
     shader.use();
     glEnable(GL_PROGRAM_POINT_SIZE);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(.6,.2,.0,1.0);
+        glClearColor(.6, .2, .0, 1.0);
         processInput(window);
         shader.use();
         screen.draw();
-	glfwSwapBuffers(window);
-	glfwPollEvents();
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
-int main() {
+int main()
+{
     mainloop();
 }
 
-int gladInit() {
+int gladInit()
+{
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize" << std::endl;
@@ -56,38 +58,41 @@ int gladInit() {
     return 0;
 }
 
-int createWindow(GLFWwindow*& window,
-    int width,
-    int height,
-    std::string title) {
-    //create a glfw window 
+GLFWwindow* createWindow(
+                 int width,
+                 int height,
+                 std::string title)
+{
+    // create a glfw window
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    //create window
-    window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+    // create window
+    GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return -1;
+        return nullptr;
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    //glfwSetCursorPosCallback(window, mouse_callback);
+    // glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetMouseButtonCallback(window, mouse_button);
-    //glfwSetScrollCallback(window, scroll_callback);
+    // glfwSetScrollCallback(window, scroll_callback);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-    return 0;
+    return window; 
 }
 
-void drawCircle(Point c,Point p_){
-    double r = sqrt((p_.x-c.x)*(p_.x-c.x) + (p_.y-c.y)*(p_.y-c.y));
-    std::cout << "Create Circle: "<< " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
+void drawCircle(Point c, Point p_)
+{
+    double r = sqrt((p_.x - c.x) * (p_.x - c.x) + (p_.y - c.y) * (p_.y - c.y));
+    std::cout << "Create Circle: "
+              << " Center: " << c.x << ' ' << c.y << " Radius: " << r << '\n';
     std::shared_ptr<Algorithm> dda(new DDA);
     std::shared_ptr<Algorithm> bresham(new Bresham);
 
@@ -95,7 +100,7 @@ void drawCircle(Point c,Point p_){
     bresham->exec_algorithm(c, r);
 }
 
-void processInput(GLFWwindow* window)
+void processInput(GLFWwindow *window)
 {
     static bool enableCursor = false;
 
@@ -105,29 +110,32 @@ void processInput(GLFWwindow* window)
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
+    // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
 
-
-void mouse_button(GLFWwindow* window, int button, int action,int mods){
-    static int click_cnt = 0; 
-    static Point c; 
-    static Point p; 
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        click_cnt += 1; 
+void mouse_button(GLFWwindow *window, int button, int action, int mods)
+{
+    static int click_cnt = 0;
+    static Point c;
+    static Point p;
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        click_cnt += 1;
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         // std::cout << "Click Count: " << click_cnt << '\n';
-        if(click_cnt == 1){
-            c = {int(xpos),int(ypos)};
+        if (click_cnt == 1)
+        {
+            c = {int(xpos), int(ypos)};
         }
-        if(click_cnt == 2){
-            p = {int(xpos),int(ypos)};
-            drawCircle(c,p);
+        if (click_cnt == 2)
+        {
+            p = {int(xpos), int(ypos)};
+            drawCircle(c, p);
             click_cnt = 0;
         }
     }
