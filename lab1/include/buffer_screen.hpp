@@ -18,11 +18,16 @@ public:
     GLuint VBO;
     bool dirty; 
 
-    Screen(){
+
+    Screen(): vertices{}{
         dirty = false; 
         VAO = 0;
         VBO = 0;
-        vertices.clear();
+    }
+
+    static Screen* GetInstance(){
+        static Screen screen; 
+        return &screen; 
     }
 
     void draw(){
@@ -68,9 +73,6 @@ public:
 };
 
 
-//admit the other files use (aims at main.cpp)
-Screen screen;  
-
 void Screen::append(Buffer& buff){
     for(auto it = buff.buffer.begin(); it != buff.buffer.end(); it += 2){
         float x = (*it) * 2.0 / SCR_WIDTH - 1;
@@ -80,7 +82,4 @@ void Screen::append(Buffer& buff){
     }
     dirty = true;
 }
-
-
-
 #endif

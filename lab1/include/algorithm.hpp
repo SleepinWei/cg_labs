@@ -55,7 +55,7 @@ class DDA: public Algorithm{
         // END of TODO
         }
         std::cout <<"func1 dda: "<< (glfwGetTime() - begTime) * 1000 << "ms\n"; 
-        screen.append(buff);
+        Screen::GetInstance()->append(buff);
     }
 };
 
@@ -99,7 +99,7 @@ class Bresham: public Algorithm{
         // END of TODO
         }
         std::cout <<"func2 bresham: "<< (glfwGetTime() - begTime) * 1000 << "ms\n"; 
-        screen.append(buff);
+        Screen::GetInstance()->append(buff);
     }
 };
 

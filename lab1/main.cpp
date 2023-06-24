@@ -13,8 +13,6 @@ void processInput(GLFWwindow *window);
 GLFWwindow* createWindow(int width, int height, std::string title = "Demo");
 int gladInit();
 
-extern Screen screen;
-
 void mainloop()
 {
     glfwInit();
@@ -29,13 +27,15 @@ void mainloop()
     shader.use();
     glEnable(GL_PROGRAM_POINT_SIZE);
 
+    Screen* screen = Screen::GetInstance();
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(.6, .2, .0, 1.0);
         processInput(window);
         shader.use();
-        screen.draw();
+        screen->draw();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
